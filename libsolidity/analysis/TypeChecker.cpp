@@ -2533,7 +2533,14 @@ bool TypeChecker::visit(MemberAccess const& _memberAccess)
 	// TODO some members might be pure, but for example `address(0x123).balance` is not pure
 	// although every subexpression is, so leaving this limited for now.
 	if (auto tt = dynamic_cast<TypeType const*>(exprType))
+	{
 		if (tt->actualType()->category() == Type::Category::Enum)
+			annotation.isPure = true;
+		if (auto const* functionType = dynamic_cast<FunctionType const*>(annotation.type))
+			if (functionType->kind() == FunctionType::Kind::Declaration)
+				annotation.isPure = true;
+	}
+	if (exprType->category() == Type::Category::Function && memberName == "selector")
 			annotation.isPure = true;
 	if (auto magicType = dynamic_cast<MagicType const*>(exprType))
 	{

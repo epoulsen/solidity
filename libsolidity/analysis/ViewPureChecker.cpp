@@ -317,7 +317,8 @@ bool ViewPureChecker::visit(MemberAccess const& _memberAccess)
 	// Catch the special case of `this.f.selector` which is a pure expression.
 	ASTString const& member = _memberAccess.memberName();
 	if (
-		_memberAccess.expression().annotation().type->category() == Type::Category::Function &&
+		auto const * functionType = dynamic_cast<FunctionType const*>(_memberAccess.expression().annotation().type);
+		functionType &&
 		member == "selector"
 	)
 		if (auto const* expr = dynamic_cast<MemberAccess const*>(&_memberAccess.expression()))

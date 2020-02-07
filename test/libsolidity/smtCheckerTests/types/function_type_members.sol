@@ -6,6 +6,7 @@ contract C {
     }
 }
 // ----
+// Warning: (108-118): Statement has no effect.
 // Warning: (108-118): Assertion checker does not yet support this expression.
 // Warning: (122-130): Assertion checker does not yet implement this type of function call.
 // Warning: (122-139): Assertion checker does not yet implement this type of function call.
