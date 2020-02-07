@@ -6,4 +6,4 @@ contract C {
 // EVMVersion: >=byzantium
 // revertStrings: debug
 // ----
-// f(uint256[]): 0x20, 1 -> FAILURE, hex"08c379a0", 0x20, 49, "ABI decoding error: invalid call", "data array stride"
+// f(uint256[]): 0x20, 1 -> FAILURE, hex"08c379a0", 0x20, 43, "ABI decoding: invalid calldata a", "rray stride"

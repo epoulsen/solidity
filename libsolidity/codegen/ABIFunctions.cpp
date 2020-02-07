@@ -185,7 +185,7 @@ string ABIFunctions::tupleDecoder(TypePointers const& _types, bool _fromMemory)
 			}
 		)");
 		templ("functionName", functionName);
-		templ("revertString", revertReasonIfDebug("ABI decoding error: tuple data too short"));
+		templ("revertString", revertReasonIfDebug("ABI decoding: tuple data too short"));
 		templ("minimumSize", to_string(headSize(decodingTypes)));
 
 		string decodeElements;
@@ -224,7 +224,7 @@ string ABIFunctions::tupleDecoder(TypePointers const& _types, bool _fromMemory)
 				)"
 			);
 			// TODO add test
-			elementTempl("revertString", revertReasonIfDebug("ABI decoding error: invalid tuple offset"));
+			elementTempl("revertString", revertReasonIfDebug("ABI decoding: invalid tuple offset"));
 			elementTempl("load", _fromMemory ? "mload" : "calldataload");
 			elementTempl("values", boost::algorithm::join(valueNamesLocal, ", "));
 			elementTempl("pos", to_string(headPos));
@@ -461,7 +461,7 @@ string ABIFunctions::abiEncodingFunctionCalldataArrayWithoutCleanup(
 					)")
 					("stride", toCompactHexWithPrefix(fromArrayType.calldataStride()))
 					("maxLength", toCompactHexWithPrefix(u256(-1) / fromArrayType.calldataStride()))
-					("revertString", revertReasonIfDebug("ABI encoding error: array data too long"))
+					("revertString", revertReasonIfDebug("ABI encoding: array data too long"))
 					.render()
 					// TODO add revert test
 				);
@@ -1147,7 +1147,7 @@ string ABIFunctions::abiDecodingFunctionArray(ArrayType const& _type, bool _from
 			)"
 		);
 		// TODO add test
-		templ("revertString", revertReasonIfDebug("ABI decoding error: invalid calldata array offset"));
+		templ("revertString", revertReasonIfDebug("ABI decoding: invalid calldata array offset"));
 		templ("functionName", functionName);
 		templ("readableTypeName", _type.toString(true));
 		templ("retrieveLength", !_type.isDynamicallySized() ? toCompactHexWithPrefix(_type.length()) : load + "(offset)");
@@ -1169,7 +1169,7 @@ string ABIFunctions::abiDecodingFunctionArray(ArrayType const& _type, bool _from
 			templ("staticBoundsCheck", "if gt(add(src, mul(length, " +
 				calldataStride +
 				")), end) { " +
-				revertReasonIfDebug("ABI decoding error: invalid calldata array stride") +
+				revertReasonIfDebug("ABI decoding: invalid calldata array stride") +
 				" }"
 			);
 			templ("retrieveElementPos", "src");
@@ -1213,9 +1213,9 @@ string ABIFunctions::abiDecodingFunctionCalldataArray(ArrayType const& _type)
 			)";
 		Whiskers w{templ};
 		// TODO add test
-		w("revertStringOffset", revertReasonIfDebug("ABI decoding error: invalid calldata array offset"));
-		w("revertStringLength", revertReasonIfDebug("ABI decoding error: invalid calldata array length"));
-		w("revertStringPos", revertReasonIfDebug("ABI decoding error: invalid calldata array stride"));
+		w("revertStringOffset", revertReasonIfDebug("ABI decoding: invalid calldata array offset"));
+		w("revertStringLength", revertReasonIfDebug("ABI decoding: invalid calldata array length"));
+		w("revertStringPos", revertReasonIfDebug("ABI decoding: invalid calldata array stride"));
 		w("functionName", functionName);
 		w("readableTypeName", _type.toString(true));
 		w("stride", toCompactHexWithPrefix(_type.calldataStride()));
@@ -1251,8 +1251,8 @@ string ABIFunctions::abiDecodingFunctionByteArray(ArrayType const& _type, bool _
 			)"
 		);
 		// TODO add test
-		templ("revertStringOffset", revertReasonIfDebug("ABI decoding error: invalid byte array offset"));
-		templ("revertStringLength", revertReasonIfDebug("ABI decoding error: invalid byte array length"));
+		templ("revertStringOffset", revertReasonIfDebug("ABI decoding: invalid byte array offset"));
+		templ("revertStringLength", revertReasonIfDebug("ABI decoding: invalid byte array length"));
 		templ("functionName", functionName);
 		templ("load", _fromMemory ? "mload" : "calldataload");
 		templ("allocate", m_utils.allocationFunction());
@@ -1278,7 +1278,7 @@ string ABIFunctions::abiDecodingFunctionCalldataStruct(StructType const& _type)
 				}
 		)"};
 		// TODO add test
-		w("revertString", revertReasonIfDebug("ABI decoding error: struct calldata too short"));
+		w("revertString", revertReasonIfDebug("ABI decoding: struct calldata too short"));
 		w("functionName", functionName);
 		w("readableTypeName", _type.toString(true));
 		w("minimumSize", to_string(_type.isDynamicallyEncoded() ? _type.calldataEncodedTailSize() : _type.calldataEncodedSize(true)));
@@ -1309,7 +1309,7 @@ string ABIFunctions::abiDecodingFunctionStruct(StructType const& _type, bool _fr
 			}
 		)");
 		// TODO add test
-		templ("revertString", revertReasonIfDebug("ABI decoding error: struct data too short"));
+		templ("revertString", revertReasonIfDebug("ABI decoding: struct data too short"));
 		templ("functionName", functionName);
 		templ("readableTypeName", _type.toString(true));
 		templ("allocate", m_utils.allocationFunction());
@@ -1337,7 +1337,7 @@ string ABIFunctions::abiDecodingFunctionStruct(StructType const& _type, bool _fr
 				)"
 			);
 			// TODO add test
-			memberTempl("revertString", revertReasonIfDebug("ABI decoding error: invalid struct offset"));
+			memberTempl("revertString", revertReasonIfDebug("ABI decoding: invalid struct offset"));
 			memberTempl("load", _fromMemory ? "mload" : "calldataload");
 			memberTempl("pos", to_string(headPos));
 			memberTempl("memoryOffset", toCompactHexWithPrefix(_type.memoryOffsetOfMember(member.name)));
