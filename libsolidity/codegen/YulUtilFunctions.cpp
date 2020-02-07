@@ -1911,10 +1911,9 @@ string YulUtilFunctions::revertReasonIfDebug(RevertStrings revertStrings, string
 	if (revertStrings >= RevertStrings::Debug && !_message.empty())
 	{
 		Whiskers templ(R"({
-			let reasonLen := <length>
 			mstore(0, <sig>)
 			mstore(4, 0x20)
-			mstore(add(4, 0x20), reasonLen)
+			mstore(add(4, 0x20), <length>)
 			let reasonPos := add(4, 0x40)
 			<#word>
 				mstore(add(reasonPos, <offset>), <wordValue>)

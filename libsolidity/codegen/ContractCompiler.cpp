@@ -455,7 +455,7 @@ void ContractCompiler::appendFunctionSelector(ContractDefinition const& _contrac
 			// If the function is not a view function and is called without DELEGATECALL,
 			// we revert.
 			m_context << dupInstruction(2);
-			m_context.appendConditionalRevert(false, "Non view function of library called without DELEGATECALL");
+			m_context.appendConditionalRevert(false, "Non-view function of library called without DELEGATECALL");
 		}
 		m_context.setStackOffset(0);
 		// We have to allow this for libraries, because value of the previous
